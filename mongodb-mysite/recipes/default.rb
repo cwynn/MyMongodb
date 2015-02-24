@@ -5,6 +5,8 @@
 #include_recipe "mongodb::default"
 
 package 'fail2ban'
+  action :install
+end
 
 service 'fail2ban' do
   action [:start, :enable]
