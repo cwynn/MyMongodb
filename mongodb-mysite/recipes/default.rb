@@ -11,3 +11,8 @@ end
 service 'fail2ban' do
   action [:start, :enable]
 end
+
+user_account 'hsolo' do
+  comment   'Han Solo'
+  home      '/home/hsolo'
+end
