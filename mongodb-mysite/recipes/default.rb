@@ -7,9 +7,6 @@
 package 'fail2ban'
   action :install
 end
-package 'fail2ban'
-  action :upgrade
-end
 
 service 'fail2ban' do
   action [:start, :enable]
