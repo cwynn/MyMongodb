@@ -11,7 +11,3 @@ end
 service 'fail2ban' do
   action [:start, :enable]
 end
-
-package 'fail2ban'
-  action :upgrade
-end
