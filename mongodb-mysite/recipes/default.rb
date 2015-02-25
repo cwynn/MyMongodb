@@ -1,13 +1,38 @@
-#node.normal[:mongodb][:config][:bind_ip] = "127.0.0.1,#{node[:opsworks][:instance][:private_ip]}"
-
-
-#include_recipe "mongodb::10gen_repo"
-#include_recipe "mongodb::default"
-
+--begin
 package 'fail2ban'
   action :install
 end
 
 service 'fail2ban' do
   action [:start, :enable]
+end
+--end
+
+package "fail2ban"
+  action :upgrade
+end
+
+service "fail2ban" do
+  supports [ :status => true, :restart => true ]
+  action [ :enable, :start ]
+end
+
+%w{ fail2ban jail }.each do |cfg|
+  template "/etc/fail2ban/#{cfg}.conf" do
+    source "#{cfg}.conf.erb"
+    owner "root"
+    group "root"
+    mode 0644
+    notifies :restart, resources(:service => 'fail2ban')
+  end
+end
+
+%w{ nginx-auth nginx-proxy nginx-noscript }.each do |cfg|
+  template "/etc/fail2ban/filter.d/#{cfg}.conf" do
+    source "#{cfg}.conf.erb"
+    owner "root"
+    group "root"
+    mode 0644
+    notifies :restart, resources(:service => 'fail2ban')
+  end
 end
