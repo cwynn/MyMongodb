@@ -1,9 +1,9 @@
 --begin
-package 'fail2ban'
+package "fail2ban
   action :install
 end
 
-service 'fail2ban' do
+service "fail2ban do
   action [:start, :enable]
 end
 --end
